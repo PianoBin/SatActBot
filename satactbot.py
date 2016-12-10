@@ -58,7 +58,7 @@ def getIDS(config):
 def openDB():
 	global db
 	global cursor
-	db = sqlite3.connect("C:\\Users\\shmoto\\Documents\\GitHub\\SatActbot\\Comment.db")
+	db = sqlite3.connect("Comment.db")
 	cursor = db.cursor()
 
 def closeDB():
