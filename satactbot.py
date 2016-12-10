@@ -25,7 +25,7 @@ def main():
 			print(submission.title)
 			print(submission.url)
 			process_sub(submission)
-		time.sleep(30)	
+		time.sleep(120)	
 	closeDB()
 
 def openDB():
