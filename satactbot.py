@@ -2,7 +2,8 @@ import os
 import praw
 import sqlite3
 import time
-
+import botty
+import heroku3
 
 SUMMONS = ['!SATACT', '!ACTSAT']
 REPLY_TEMP = "beep boop\n\nThe equivalent " #ACT/SAT
@@ -14,12 +15,11 @@ ACTscores = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
 
 SATscores = [560, 630, 720, 760, 810, 860, 900, 940, 980, 1020, 1060, 1110, 1130, 1160, 1200, 1240, 1280, 1310, 1350, 1390, 1420, 1450, 1490, 1520, 1560, 1600]
 
-login_us = os.environ['REDDIT_USERNAME']
-login_pass = os.environ['REDDIT_PASSWORD']
-login_id = os.environ['REDDIT_ID']
-login_sec = os.environ['REDDIT_SEC']
-
 def main():
+	heroku_conn = heroku3.from_key(botty.key)
+	app = heroku_conn.apps()[' fierce-spire-57526']
+	config = app.config()
+	getIDS(config)
 	reddit = praw.Reddit(user_agent='SatActBot (by /u/Pianobin)', username = login_us, password = login_pass, client_id= login_id, client_secret = login_sec)
 	subreddit = reddit.subreddit('SatActbot')
 	openDB()
@@ -30,6 +30,18 @@ def main():
 			process_sub(submission)
 		time.sleep(120)	
 	closeDB()
+
+def getIDS(config):
+	global login_us
+	global login_pass
+	global login_id
+	global login_sec
+	dictIDS = config.to_dict()
+	print(dictIDS)
+	login_us = dictIDS['REDDIT_USERNAME']
+	login_pass = dictIDS['REDDIT_PASSWORD']
+	login_id = dictIDS['REDDIT_ID']
+	login_sec = dictIDS['REDDIT_SEC']
 
 def openDB():
 	global db
