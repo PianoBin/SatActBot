@@ -1,5 +1,4 @@
 APScheduler==3.3.0
-./bin/botty.py
 decorator==4.0.10
 heroku3==3.2.1
 praw==4.0.0
