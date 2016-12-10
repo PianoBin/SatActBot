@@ -1,6 +1,7 @@
 import praw
 import sqlite3
 import bot
+import time
 
 SUMMONS = ['!SATACT', '!ACTSAT']
 REPLY_TEMP = "beep boop\n\nThe equivalent " #ACT/SAT
@@ -16,10 +17,12 @@ def main():
 	reddit = praw.Reddit(user_agent='SatActBot (by /u/Pianobin)', username = bot.user, password = bot.pw, client_id= bot.idS, client_secret = bot.idSec)
 	subreddit = reddit.subreddit('SatActbot')
 	openDB()
-	for submission in subreddit.new(limit=10):
-		print(submission.title)
-		print(submission.url)
-		process_sub(submission)
+	while True:
+		for submission in subreddit.new(limit=10):
+			print(submission.title)
+			print(submission.url)
+			process_sub(submission)
+		time.sleep(30)	
 	closeDB()
 
 def openDB():
@@ -35,7 +38,6 @@ def process_sub(submission):
 	submission.comments.replace_more(limit=0)
 	for comment in submission.comments.list():
 		foundLink = False
-		print("selecting")
 		cursor.execute("""SELECT link FROM comments WHERE link=?""", (comment.permalink(),))
 		for row in cursor:
 			if comment.permalink() == row[0]:
@@ -44,7 +46,6 @@ def process_sub(submission):
 		if foundLink:
 			pass
 		else:
-			print("new")
 			for summon in SUMMONS:
 				if summon in comment.body:
 					commStr = str(comment.body)

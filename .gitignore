@@ -1,7 +1,14 @@
 bot.py
+bot.py~
 clear.py
+clear.py~
 make.py
+make.py~
 see.py
+see.py~
+.gitignore~
+satactbot.py~
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
