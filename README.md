@@ -1,15 +1,19 @@
 # SatActBot
 
 ## About
-SAT to ACT score conversions bot. This converts between SAT and ACT scores for you. It is a [Reddit](https://www.reddit.com/) built with PRAW and Python 3. 
+SAT to ACT score conversions bot. This converts between SAT and ACT scores for you. It is a [Reddit](https://www.reddit.com/) bot built with [PRAW](http://praw.readthedocs.io/en/latest/) and [Python 3](https://docs.python.org/3/). 
 
-## How to summon the bot:
-!SATACT or !ACTSAT followed by the score you would like to convert.
+This bot uses the Concordance Tables provided by Collegeboard.
+
+## How to summon:
+!SATACT or !ACTSAT followed by the score you would like to convert. It doesn't matter which command you use. The bot will recognize which score type (ACT or SAT) you posted itself.
 
 Example:
 `!SATACT 1410`
+`!ACTSAT 34`
+`!ACTSAT 1550`
 
 ## Current subreddits active in:
 
 ## Bot activity
-This bot is currently active between 6 AM and Midnight, daily. It checks for new comments every minute.
+This bot is active between 6 AM and Midnight, daily. It checks for new comments every minute.
