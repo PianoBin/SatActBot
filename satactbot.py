@@ -13,8 +13,11 @@ ACTscores = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
 
 SATscores = [560, 630, 720, 760, 810, 860, 900, 940, 980, 1020, 1060, 1110, 1130, 1160, 1200, 1240, 1280, 1310, 1350, 1390, 1420, 1450, 1490, 1520, 1560, 1600]
 
+login_us = os.environ['REDDIT_USERNAME']
+login_pass = os.environ['REDDIT_PASSWORD']
+
 def main():
-	reddit = praw.Reddit(user_agent='SatActBot (by /u/Pianobin)', username = bot.user, password = bot.pw, client_id= bot.idS, client_secret = bot.idSec)
+	reddit = praw.Reddit(user_agent='SatActBot (by /u/Pianobin)', username = login_us, password = login_pass, client_id= bot.idS, client_secret = bot.idSec)
 	subreddit = reddit.subreddit('SatActbot')
 	openDB()
 	while True:
