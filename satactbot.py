@@ -2,7 +2,7 @@ import os
 import praw
 import sqlite3
 import time
-import botty
+from .botty import botty
 import heroku3
 
 SUMMONS = ['!SATACT', '!ACTSAT']
