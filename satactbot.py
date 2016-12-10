@@ -17,7 +17,7 @@ ACTscores = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
 SATscores = [560, 630, 720, 760, 810, 860, 900, 940, 980, 1020, 1060, 1110, 1130, 1160, 1200, 1240, 1280, 1310, 1350, 1390, 1420, 1450, 1490, 1520, 1560, 1600]
 
 def main():
-	botty = importlib.import_module('botty')
+	botty = importlib.import_module('bin.botty')
 	heroku_conn = heroku3.from_key(botty.botClass.key)
 	app = heroku_conn.apps()['fierce-spire-57526']
 	print("Heroku configured (1/5)")
