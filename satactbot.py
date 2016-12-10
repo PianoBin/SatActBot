@@ -1,6 +1,5 @@
 import praw
 import sqlite3
-import bot
 import time
 
 SUMMONS = ['!SATACT', '!ACTSAT']
@@ -15,9 +14,11 @@ SATscores = [560, 630, 720, 760, 810, 860, 900, 940, 980, 1020, 1060, 1110, 1130
 
 login_us = os.environ['REDDIT_USERNAME']
 login_pass = os.environ['REDDIT_PASSWORD']
+login_id = os.environ['REDDIT_ID']
+login_sec = os.environ['REDDIT_SEC']
 
 def main():
-	reddit = praw.Reddit(user_agent='SatActBot (by /u/Pianobin)', username = login_us, password = login_pass, client_id= bot.idS, client_secret = bot.idSec)
+	reddit = praw.Reddit(user_agent='SatActBot (by /u/Pianobin)', username = login_us, password = login_pass, client_id= login_id, client_secret = login_sec)
 	subreddit = reddit.subreddit('SatActbot')
 	openDB()
 	while True:
