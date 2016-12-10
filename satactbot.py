@@ -27,12 +27,12 @@ def main():
 	print("Logged into Reddit (3/5)")
 	sched = BlockingScheduler(timezone="America/New_York")
 	print("timezone set (4/5)")
-	sched.add_job(run_app, 'cron', hour='6-23', minute='0-59')
+	sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
 	print("Job scheduled (5/5)")
 	print("Ready to go!")
 	sched.start()
 
-def run_app():	
+def run_app(reddit):	
 	print("running app")
 	subreddit = reddit.subreddit('SatActbot')
 	openDB()
