@@ -2,8 +2,9 @@ import os
 import praw
 import sqlite3
 import time
-from SatActbot.botty import botClass
+from botty import botClass
 import heroku3
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 SUMMONS = ['!SATACT', '!ACTSAT']
 REPLY_TEMP = "beep boop\n\nThe equivalent " #ACT/SAT
@@ -17,19 +18,32 @@ SATscores = [560, 630, 720, 760, 810, 860, 900, 940, 980, 1020, 1060, 1110, 1130
 
 def main():
 	heroku_conn = heroku3.from_key(botClass.key)
-	app = heroku_conn.apps()[' fierce-spire-57526']
+	app = heroku_conn.apps()['fierce-spire-57526']
+	print("Heroku configured (1/5)")
 	config = app.config()
 	getIDS(config)
+	print("Config vars retrieved (2/5)")
 	reddit = praw.Reddit(user_agent='SatActBot (by /u/Pianobin)', username = login_us, password = login_pass, client_id= login_id, client_secret = login_sec)
+	print("Logged into Reddit (3/5)")
+	sched = BlockingScheduler(timezone="America/New_York")
+	print("timezone set (4/5)")
+	sched.add_job(run_app, 'cron', hour='6-23', minute='0-59')
+	print("Job scheduled (5/5)")
+	print("Ready to go!")
+	sched.start()
+
+def run_app():	
+	print("running app")
 	subreddit = reddit.subreddit('SatActbot')
 	openDB()
-	while True:
-		for submission in subreddit.new(limit=10):
-			print(submission.title)
-			print(submission.url)
-			process_sub(submission)
-		time.sleep(120)	
+	for submission in subreddit.new(limit=10):
+		print(submission.title)
+		print(submission.url)
+		process_sub(submission)
 	closeDB()
+	print("Job complete, sleeping")
+	localtime = time.asctime( time.localtime(time.time()) )
+	print ("Local current time :", localtime)
 
 def getIDS(config):
 	global login_us
@@ -37,7 +51,6 @@ def getIDS(config):
 	global login_id
 	global login_sec
 	dictIDS = config.to_dict()
-	print(dictIDS)
 	login_us = dictIDS['REDDIT_USERNAME']
 	login_pass = dictIDS['REDDIT_PASSWORD']
 	login_id = dictIDS['REDDIT_ID']
