@@ -1,6 +1,7 @@
 import praw
 import sqlite3
 import time
+import os
 
 SUMMONS = ['!SATACT', '!ACTSAT']
 REPLY_TEMP = "beep boop\n\nThe equivalent " #ACT/SAT
