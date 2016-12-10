@@ -1,0 +1,13 @@
+import sqlite3
+
+db = sqlite3.connect("Comment.db")
+cursor = db.cursor()
+cursor.execute("""CREATE TABLE comments(links TEXT)""")
+print("MADE TABLE")
+
+cursor.execute("""INSERT INTO comments
+		(links)VALUES(?)""", ("https://www.google.com/",))
+db.commit()
+print("ADDED GOOGLE")
+db.close()
+

@@ -1,0 +1,7 @@
+import sqlite3
+
+db = sqlite3.connect("Comment.db")
+cursor = db.cursor()
+cursor.execute("""DROP TABLE comments""")
+db.commit()
+db.close()
