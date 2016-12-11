@@ -25,7 +25,7 @@ def main():
 	reddit = login_red()
 	sched = BlockingScheduler(timezone="America/New_York")
 	print("timezone set (4/5)")
-	sched.add_job(lambda: run_app(reddit), 'cron', hour='13-23', minute='5-59')
+	sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
 	print("Job scheduled (5/5)")
 	print("Ready to go!")
 	sched.start()	
