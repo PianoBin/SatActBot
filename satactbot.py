@@ -106,17 +106,17 @@ def process_sub(comment):
 							notTheType = "SAT"
 							response = "between " + str(lowNum) + " and " + str(highNum)
 							print(response)
-							reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
+							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + response + REPLY_TEMP4
 						elif theNum == 36: #PERFECT ACT
 							theType = "ACT"
 							notTheType = "SAT"
 							response = "1600"
-							reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
+							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + response + REPLY_TEMP4
 						elif theNum == 1600: #PERFECT SAT
 							theType = "SAT"
 							notTheType = "ACT"
 							response = "36"
-							reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
+							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + response + REPLY_TEMP4
 						elif theNum >= 560 and theNum < 1600: #SAT provided
 							nearScore = min(SATscores, key=lambda x:abs(x - theNum))
 							print(nearScore)
@@ -128,7 +128,7 @@ def process_sub(comment):
 							notTheType = "ACT"
 							response = str(ACT)
 							print(response)
-							reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
+							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + response + REPLY_TEMP4
 						else: 
 							print("Invalid number provided")
 							theType = "invalid"
