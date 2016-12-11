@@ -22,19 +22,32 @@ def main():
 	config = app.config()
 	getIDS(config)
 	print("Config vars retrieved (2/5)")
-	reddit = praw.Reddit(user_agent='SatActBot (by /u/Pianobin)', username = login_us, password = login_pass, client_id= login_id, client_secret = login_sec)
-	print("Logged into Reddit (3/5)")
+	reddit = login_red()
 	sched = BlockingScheduler(timezone="America/New_York")
 	print("timezone set (4/5)")
+	sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
+	print("Job scheduled (5/5)")
+	print("Ready to go!")
+	sched.start()	
+
+def login_red():
 	while True:
-		sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
-		print("Job scheduled (5/5)")
-		print("Ready to go!")
-		sched.start()
+		try:
+			reddit = praw.Reddit(user_agent='SatActBot (by /u/Pianobin)', username = login_us, password = login_pass, client_id= login_id, client_secret = login_sec)
+			print("Logged into Reddit (3/5)")
+			return reddit
+		except:
+			print("Couldn't login")
+			time.sleep(120)
 
 def run_app(reddit):	
 	print("running app")
-	subreddit = reddit.subreddit('SatActbot+ApplyingToCollege')
+	try:
+		subreddit = reddit.subreddit('SatActbot+ApplyingToCollege')
+	except:
+		print("Couldn't connect with subreddits")
+		reddit = login_red
+		subreddit = reddit.subreddit('SatActbot+ApplyingToCollege')
 	openDB()
 	for comment in subreddit.comments(limit=25):
 		process_sub(comment)
