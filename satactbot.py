@@ -35,10 +35,8 @@ def run_app(reddit):
 	print("running app")
 	subreddit = reddit.subreddit('SatActbot')
 	openDB()
-	for submission in subreddit.new(limit=10):
-		print(submission.title)
-		print(submission.url)
-		process_sub(submission)
+	for comment in subreddit.comments(limit=25):
+		process_sub(comment)
 	closeDB()
 	print("Job complete, sleeping")
 	localtime = time.asctime( time.localtime(time.time()) )
@@ -64,71 +62,69 @@ def openDB():
 def closeDB():
 	db.close()
 
-def process_sub(submission):
-	submission.comments.replace_more(limit=0)
-	for comment in submission.comments.list():
-		foundLink = False
-		cursor.execute("""SELECT link FROM comments WHERE link=?""", (comment.permalink(),))
-		for row in cursor:
-			if comment.permalink() == row[0]:
-				foundLink = True
-				break	
-		if foundLink:
-			pass
-		else:
-			for summon in SUMMONS:
-				if summon in comment.body:
-					commStr = str(comment.body)
-					print(commStr)
-					for num in commStr.split():
-						if num.isdigit():
-							theNum = int(num)
-							print(theNum)
-							if theNum >= 10 and theNum < 36: #ACT score provided
-								theIndex = ACTscores.index(theNum)
-								lowNum = SATscores[theIndex]
-								highNum = SATscores[theIndex + 1] - 10		
-								theType = "ACT"
-								notTheType = "SAT"
-								response = "between " + str(lowNum) + " and " + str(highNum)
-								print(response)
-								reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
-							elif theNum == 36: #PERFECT ACT
-								theType = "ACT"
-								notTheType = "SAT"
-								response = "1600"
-								reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
-							elif theNum == 1600: #PERFECT SAT
-								theType = "SAT"
-								notTheType = "ACT"
-								response = "36"
-								reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
-							elif theNum >= 560 and theNum < 1600: #SAT provided
-								nearScore = min(SATscores, key=lambda x:abs(x - theNum))
-								print(nearScore)
-								theIndex = SATscores.index(nearScore)
-								if nearScore > theNum:
-									theIndex = theIndex - 1
-								ACT = ACTscores[theIndex]	
-								theType = "SAT"
-								notTheType = "ACT"
-								response = str(ACT)
-								print(response)
-								reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
-							else: 
-								print("Invalid number provided")
-								theType = "invalid"
-								notTheType = "invalid"
-								response = "invalid"
-								print(response)
-								reply_text = "beep boop \n\n Sorry, the number you've inputted is outside of the range of checked scores. Be aware, the ACT scores below 11 and the SAT scores below 560 are not provided on Collegeboard's Concordance tables. \n\n Message /u/Pianobin with any concerns."
-							print(reply_text)
-							comment.reply(reply_text)
-							print(comment.permalink())
-							cursor.execute("""INSERT INTO comments
-									(link)VALUES(?)""", (comment.permalink(),))
-							db.commit()
-							break
+def process_sub(comment):
+	foundLink = False
+	cursor.execute("""SELECT link FROM comments WHERE link=?""", (comment.permalink(),))
+	for row in cursor:
+		if comment.permalink() == row[0]:
+			foundLink = True
+			break	
+	if foundLink:
+		pass
+	else:
+		for summon in SUMMONS:
+			if summon in comment.body:
+				commStr = str(comment.body)
+				print(commStr)
+				for num in commStr.split():
+					if num.isdigit():
+						theNum = int(num)
+						print(theNum)
+						if theNum >= 10 and theNum < 36: #ACT score provided
+							theIndex = ACTscores.index(theNum)
+							lowNum = SATscores[theIndex]
+							highNum = SATscores[theIndex + 1] - 10		
+							theType = "ACT"
+							notTheType = "SAT"
+							response = "between " + str(lowNum) + " and " + str(highNum)
+							print(response)
+							reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
+						elif theNum == 36: #PERFECT ACT
+							theType = "ACT"
+							notTheType = "SAT"
+							response = "1600"
+							reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
+						elif theNum == 1600: #PERFECT SAT
+							theType = "SAT"
+							notTheType = "ACT"
+							response = "36"
+							reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
+						elif theNum >= 560 and theNum < 1600: #SAT provided
+							nearScore = min(SATscores, key=lambda x:abs(x - theNum))
+							print(nearScore)
+							theIndex = SATscores.index(nearScore)
+							if nearScore > theNum:
+								theIndex = theIndex - 1
+							ACT = ACTscores[theIndex]	
+							theType = "SAT"
+							notTheType = "ACT"
+							response = str(ACT)
+							print(response)
+							reply_text = REPLY_TEMP + theType + REPLY_TEMP2 + notTheType + REPLY_TEMP3 + response + REPLY_TEMP4
+						else: 
+							print("Invalid number provided")
+							theType = "invalid"
+							notTheType = "invalid"
+							response = "invalid"
+							print(response)
+							reply_text = "beep boop \n\n Sorry, the number you've given is outside of the range of checked scores. Be aware, the ACT scores below 11 and the SAT scores below 560 are not provided on Collegeboard's Concordance tables. \n\n Message /u/Pianobin with any concerns."
+						print(reply_text)
+						comment.reply(reply_text)
+						print(comment.permalink())
+						cursor.execute("""INSERT INTO comments
+								(link)VALUES(?)""", (comment.permalink(),))
+						db.commit()
+						break
 
 
 if __name__ == '__main__':
