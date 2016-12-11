@@ -86,6 +86,9 @@ def process_sub(comment):
 	if foundLink:
 		pass
 	else:
+		cursor.execute("""INSERT INTO comments
+				(link)VALUES(?)""", (comment.permalink(),))
+		db.commit()
 		for summon in SUMMONS:
 			if summon in comment.body:
 				commStr = str(comment.body)
@@ -135,10 +138,6 @@ def process_sub(comment):
 							reply_text = "beep boop \n\n Sorry, the number you've given is outside of the range of checked scores. Be aware, the ACT scores below 11 and the SAT scores below 560 are not provided on Collegeboard's Concordance tables. \n\n Message /u/Pianobin with any concerns."
 						print(reply_text)
 						comment.reply(reply_text)
-						print(comment.permalink())
-						cursor.execute("""INSERT INTO comments
-								(link)VALUES(?)""", (comment.permalink(),))
-						db.commit()
 						break
 
 
