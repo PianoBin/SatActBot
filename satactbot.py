@@ -33,7 +33,7 @@ def main():
 
 def run_app(reddit):	
 	print("running app")
-	subreddit = reddit.subreddit('SatActbot')
+	subreddit = reddit.subreddit('SatActbot+ApplyingToCollege')
 	openDB()
 	for comment in subreddit.comments(limit=25):
 		process_sub(comment)
