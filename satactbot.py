@@ -27,7 +27,7 @@ def main():
 	print("timezone set (4/5)")
 	awake = True
 	while True:
-		if int(time.strftime("%H")) >= 6 and int(time.strftime("%H")) <= 23:
+		if int(time.strftime("%M")) >= 35 and int(time.strftime("%M")) <= 59:
 			if not awake:
 				print("Waking up dyno")
 				app.process_formation()['worker'].scale(1)
