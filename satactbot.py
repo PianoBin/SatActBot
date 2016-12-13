@@ -27,16 +27,16 @@ def main():
 	print("timezone set (4/5)")
 	awake = True
 	while awake:
-		if int(time.strftime("%M")) >= 6 and int(time.strftime("%M")) <= 27:
+		if int(time.strftime("%H")) >= 6 and int(time.strftime("%H")) <= 23:
 			run_app(reddit)
 			time.sleep(60)
 		else:
 			print("Putting dyno to sleep")
-			app.kill_dyno("worker")
-			app.dynos['run.1'].kill()
-			dyno.kill()
-			time.sleep(60) #30 minutes
-			awake = False
+			#app.kill_dyno("worker")
+			#app.dynos['run.1'].kill()
+			#dyno.kill()
+			time.sleep(3600) #30 minutes
+			#awake = False
 	#sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
 	#print("Job scheduled (5/5)")
 	#print("Ready to go!")
