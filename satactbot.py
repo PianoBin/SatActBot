@@ -31,12 +31,8 @@ def main():
 			run_app(reddit)
 			time.sleep(60)
 		else:
-			print("Putting dyno to sleep")
-			#app.kill_dyno("worker")
-			#app.dynos['run.1'].kill()
-			#dyno.kill()
-			time.sleep(30) #30 minutes
-			#awake = False
+			print("Not working")
+			time.sleep(30)
 	#sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
 	#print("Job scheduled (5/5)")
 	#print("Ready to go!")
