@@ -25,8 +25,7 @@ def main():
 	reddit = login_red()
 	#sched = BlockingScheduler(timezone="America/New_York")
 	print("timezone set (4/5)")
-	awake = True
-	while awake:
+	while True:
 		if int(time.strftime("%H")) >= 6 and int(time.strftime("%H")) <= 23:
 			run_app(reddit)
 			time.sleep(60)
