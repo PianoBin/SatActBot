@@ -23,25 +23,12 @@ def main():
 	getIDS(config)
 	print("Config vars retrieved (2/5)")
 	reddit = login_red()
-	#sched = BlockingScheduler(timezone="America/New_York")
+	sched = BlockingScheduler(timezone="America/New_York")
 	print("timezone set (4/5)")
-	while True:
-		if int(time.strftime("%H")) >= 6 and int(time.strftime("%H")) <= 23:
-			print("Working")
-		if int(time.strftime("%M")) >= 35 and int(time.strftime("%M")) <= 59:
-			if not awake:
-				print("Waking up dyno")
-				app.process_formation()['worker'].scale(1)
-				awake = True
-			run_app(reddit)
-			time.sleep(60)
-		else:
-			print("Not working")
-			time.sleep(30)
-	#sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
-	#print("Job scheduled (5/5)")
-	#print("Ready to go!")
-	#sched.start()	
+	sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
+	print("Job scheduled (5/5)")
+	print("Ready to go!")
+	sched.start()	
 
 def login_red():
 	while True:
