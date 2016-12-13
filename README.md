@@ -15,7 +15,6 @@ Examples:
 
 ## Current subreddits active in:
 /r/SatActbot
-/r/ApplyingToCollege
 
 ## Bot activity
 This bot is active between 6 AM and Midnight, daily. It checks for new comments every minute.
