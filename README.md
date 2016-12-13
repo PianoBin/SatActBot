@@ -25,4 +25,4 @@ Examples:
 * /r/ACT
 
 ## Bot activity
-This bot is active between 6 AM and Midnight, daily. It checks for new comments every minute.
+This bot is active 24/7. It checks for new comments every minute.
