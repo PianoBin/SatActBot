@@ -26,18 +26,16 @@ def main():
 	#sched = BlockingScheduler(timezone="America/New_York")
 	print("timezone set (4/5)")
 	awake = True
-	while True:
-		if int(time.strftime("%H")) >= 6 and int(time.strftime("%H")) <= 23:
-			if not awake:
-				print("Waking up dyno")
-				app.process_formation()['worker'].scale(1)
-				awake = True
+	while awake:
+		if int(time.strftime("%M")) >= 6 and int(time.strftime("%M")) <= 27:
 			run_app(reddit)
 			time.sleep(60)
 		else:
 			print("Putting dyno to sleep")
-			app.process_formation()['worker'].scale(0)
-			time.sleep(1800) #30 minutes
+			app.kill_dyno("worker")
+			app.dynos['run.1'].kill()
+			dyno.kill()
+			time.sleep(60) #30 minutes
 			awake = False
 	#sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
 	#print("Job scheduled (5/5)")
