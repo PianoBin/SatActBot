@@ -18,23 +18,26 @@ SATscores = [560, 630, 720, 760, 810, 860, 900, 940, 980, 1020, 1060, 1100, 1130
 def main():
 	heroku_conn = heroku3.from_key("96d53836-7d2e-4254-91c3-1bc151a4409d")
 	app = heroku_conn.apps()['fierce-spire-57526']
-	print("Heroku configured (1/5)")
+	print("Connected to Heroku (1/3)")
 	config = app.config()
 	getIDS(config)
-	print("Config vars retrieved (2/5)")
+	print("Config vars retrieved (2/3)")
 	reddit = login_red()
-	sched = BlockingScheduler(timezone="America/New_York")
-	print("timezone set (4/5)")
-	sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
-	print("Job scheduled (5/5)")
-	print("Ready to go!")
-	sched.start()	
+	while True:
+		run_app(reddit)
+		time.sleep(60)
+	#sched = BlockingScheduler(timezone="America/New_York")
+	#print("timezone set (4/5)")
+	#sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
+	#print("Job scheduled (5/5)")
+	#print("Ready to go!")
+	#sched.start()	
 
 def login_red():
 	while True:
 		try:
 			reddit = praw.Reddit(user_agent='SatActBot (by /u/Pianobin)', username = login_us, password = login_pass, client_id= login_id, client_secret = login_sec)
-			print("Logged into Reddit (3/5)")
+			print("Logged into Reddit (3/3)")
 			return reddit
 		except:
 			print("Couldn't login")
@@ -49,7 +52,7 @@ def run_app(reddit):
 		reddit = login_red
 		subreddit = reddit.subreddit('SatActbot+ApplyingToCollege')
 	openDB()
-	for comment in subreddit.comments(limit=25):
+	for comment in subreddit.comments(limit=50):
 		process_sub(comment)
 	closeDB()
 	print("Job complete, sleeping")
@@ -90,7 +93,7 @@ def process_sub(comment):
 				(link)VALUES(?)""", (comment.permalink(),))
 		db.commit()
 		for summon in SUMMONS:
-			if summon in comment.body:
+			if summon in str(comment.body).upper():
 				commStr = str(comment.body)
 				commStr = commStr + " AnotherWord "
 				print(commStr)
