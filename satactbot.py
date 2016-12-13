@@ -16,7 +16,7 @@ ACTscores = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
 SATscores = [560, 630, 720, 760, 810, 860, 900, 940, 980, 1020, 1060, 1100, 1130, 1160, 1200, 1240, 1280, 1310, 1350, 1390, 1420, 1450, 1490, 1520, 1560, 1600]
 
 def main():
-	heroku_conn = heroku3.from_key("96d53836-7d2e-4254-91c3-1bc151a4409d")
+	heroku_conn = heroku3.from_key("624600ff-f687-4e19-a048-85304ad49803")
 	app = heroku_conn.apps()['fierce-spire-57526']
 	print("Connected to Heroku (1/3)")
 	config = app.config()
