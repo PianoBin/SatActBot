@@ -148,7 +148,7 @@ def process_sub(comment):
 							notTheType2 = "new SAT"
 
 							nearScore = min(oldSATscores, key=lambda x:abs(x - theNum))
-							theIndex = SATscores.index(nearScore)
+							theIndex = oldSATscores.index(nearScore)
 							if nearScore > theNum:
 								theIndex = theIndex - 1
 							response2 = 1160 + 10 * theIndex #New SAT score
