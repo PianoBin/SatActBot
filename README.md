@@ -16,10 +16,13 @@ Examples:
 `!ACTSAT 1550`
 
 ## Current subreddits active in:
-/r/SatActbot
+* /r/SatActbot
 
-/r/ApplyingToCollege
+* /r/ApplyingToCollege
 
+* /r/SAT
+
+* /r/ACT
 
 ## Bot activity
 This bot is active between 6 AM and Midnight, daily. It checks for new comments every minute.

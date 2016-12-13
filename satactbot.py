@@ -49,11 +49,11 @@ def login_red():
 def run_app(reddit):	
 	print("running app")
 	try:
-		subreddit = reddit.subreddit('SatActbot+ApplyingToCollege')
+		subreddit = reddit.subreddit('SatActbot+ApplyingToCollege+Sat+ACT')
 	except:
 		print("Couldn't connect with subreddits")
 		reddit = login_red
-		subreddit = reddit.subreddit('SatActbot+ApplyingToCollege')
+		subreddit = reddit.subreddit('SatActbot+ApplyingToCollege+Sat+ACT')
 	openDB()
 	for comment in subreddit.comments(limit=50):
 		process_sub(comment)
