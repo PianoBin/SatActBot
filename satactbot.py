@@ -159,7 +159,7 @@ def process_sub(comment):
 								theIndex2 = theIndex2 - 1
 							response = ACTscores[theIndex2] #ACT score
 
-							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + response + REPLY_TEMP5 + notTheType2 + REPLY_TEMP2 + theType + REPLY_TEMP3 + response2 + REPLY_TEMP4
+							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + str(response) + REPLY_TEMP5 + notTheType2 + REPLY_TEMP2 + theType + REPLY_TEMP3 + str(response2) + REPLY_TEMP4
 
 						else: 
 							print("Invalid number provided")
