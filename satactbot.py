@@ -1,10 +1,9 @@
-import os
 import praw
 import sqlite3
 import time
 import heroku3
-from dotenv import load_dotenv, find_dotenv
-load_dotenv(find_dotenv())
+from os.path import join, dirname
+from dotenv import load_dotenv
 
 SUMMONS = ['!SATACT', '!ACTSAT']
 REPLY_TEMP = "beep boop\n\nThe equivalent " #ACT/SAT
@@ -20,6 +19,8 @@ SATscores = [560, 630, 720, 760, 810, 860, 900, 940, 980, 1020, 1060, 1100, 1130
 oldSATscores = [1610, 1620, 1640, 1650, 1670, 1680, 1700, 1710, 1730, 1750, 1760, 1780, 1790, 1810, 1820, 1840, 1850, 1870, 1880, 1900, 1920, 1930, 1950, 1970, 1990, 2000, 2020, 2040, 2060, 2080, 2090, 2110, 2130, 2150, 2170, 2190, 2210, 2230, 2260, 2280, 2300, 2330, 2350, 2370, 2390] #newSAT 1160 + 10x
 
 def main():
+	dotenv_path = join(dirname(__file__), '.env')
+	load_dotenv(dotenv_path)
 	heroku_conn = heroku3.from_key(os.environ.get("SEC_KEY"))
 	app = heroku_conn.apps()[os.environ.get("APP_Name")]
 	print("Connected to Heroku (1/3)")
