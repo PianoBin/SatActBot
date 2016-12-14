@@ -24,7 +24,7 @@ def main():
 	#print("Connected to Heroku (1/3)")
 	#config = app.config()
 	print("Getting config vars")
-	getIDS(config)
+	getIDS()
 	print("Config vars retrieved (2/3)")
 	reddit = login_red()
 	while True:
@@ -63,7 +63,7 @@ def run_app(reddit):
 	localtime = time.asctime( time.localtime(time.time()) )
 	print ("Local current time :", localtime)
 
-def getIDS(config):
+def getIDS():
 	global login_us
 	global login_pass
 	global login_id
