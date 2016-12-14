@@ -23,8 +23,8 @@ def main():
 	dotenv_path = join(dirname(__file__), '.env')
 	load_dotenv(dotenv_path)
 	print(dotenv_path)
-	heroku_conn = heroku3.from_key(os.environ['SEC_KEY'])
-	app = heroku_conn.apps()[os.environ['APP_Name']]
+	heroku_conn = heroku3.from_key(os.getenv('SEC_KEY'))
+	app = heroku_conn.apps()[os.getenv('APP_Name')]
 	print("Connected to Heroku (1/3)")
 	config = app.config()
 	getIDS(config)
