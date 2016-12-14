@@ -7,7 +7,8 @@ SUMMONS = ['!SATACT', '!ACTSAT']
 REPLY_TEMP = "beep boop\n\nThe equivalent " #ACT/SAT
 REPLY_TEMP2 = " score to your " #ACT/SAT
 REPLY_TEMP3 = " score is " #score
-REPLY_TEMP4 = ".\n\n***\n\n^Data ^was ^provided ^by ^Collegeboard's ^Concordance ^tables ^last ^updated ^May ^9, ^2016 ^| ^Created ^by ^/u/Pianobin"
+OLD_REPLY_TEMP4 = ".\n\n***\n\n^Data ^was ^provided ^by ^Collegeboard's ^Concordance ^tables ^last ^updated ^May ^9, ^2016 ^| ^Created ^by ^/u/Pianobin"
+REPLY_TEMP4 = ".\n\n***\n\n[[About]](https://www.reddit.com/r/ApplyingToCollege/comments/5hrp6o/introducing_an_actsat_score_conversions_bot_to/) | [[Source Code]](https://github.com/PianoBin/SatActbot) | [[Contact]](https://www.reddit.com/message/compose/?to=Pianobin&subject=SatActbot)"
 REPLY_TEMP5 = ". The equivalent "
 
 ACTscores = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
@@ -56,7 +57,7 @@ def login_red():
 			time.sleep(120)
 
 def run_app(reddit):	
-	print("running app")
+	log("Running bot", Color.GREEN)
 	try:
 		subreddit = reddit.subreddit('SatActbot+ApplyingToCollege+Sat+ACT')
 		log("Connected to subreddits", Color.GREEN)
