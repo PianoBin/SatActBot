@@ -4,7 +4,7 @@ import sqlite3
 import time
 import heroku3
 from apscheduler.schedulers.blocking import BlockingScheduler
-from .herokuCodes import Codes 
+from herokuCodes import Codes 
 
 SUMMONS = ['!SATACT', '!ACTSAT']
 REPLY_TEMP = "beep boop\n\nThe equivalent " #ACT/SAT
