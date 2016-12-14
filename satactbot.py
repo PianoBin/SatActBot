@@ -16,42 +16,60 @@ SATscores = [560, 630, 720, 760, 810, 860, 900, 940, 980, 1020, 1060, 1100, 1130
 
 oldSATscores = [1610, 1620, 1640, 1650, 1670, 1680, 1700, 1710, 1730, 1750, 1760, 1780, 1790, 1810, 1820, 1840, 1850, 1870, 1880, 1900, 1920, 1930, 1950, 1970, 1990, 2000, 2020, 2040, 2060, 2080, 2090, 2110, 2130, 2150, 2170, 2190, 2210, 2230, 2260, 2280, 2300, 2330, 2350, 2370, 2390] #newSAT 1160 + 10x
 
+class Color:
+	PURPLE = '\033[95m'
+	CYAN = '\033[96m'
+	DARKCYAN = '\033[36m'
+	BLUE = '\033[94m'
+	GREEN = '\033[92m'
+	YELLOW = '\033[93m'
+	RED = '\033[91m'
+	BOLD = '\033[1m'
+	UNDERLINE = '\033[4m'
+	END = '\033[0m'
+
+def log(message, *colorargs):
+	if len(colorargs) > 0:
+		print(colorargs[0] + message + Color.END)
+	else:
+		print(message)
+
 def main():
-	print("Starting processes")
-	print("Getting config vars (1/3)")
+	log("Starting processes", Color.PURPLE)
+	log("Getting config vars (1/3)", Color.YELLOW)
 	getIDS()
-	print("Config vars retrieved (2/3)")
+	log("Config vars retrieved (2/3)", Color.YELLOW)
 	reddit = login_red()
+	log("Logged into Reddit (3/3)", Color.YELLOW)
 	while True:
 		run_app(reddit)
 		time.sleep(60)
+		log("Job complete, sleeping", Color.GREEN)
 
 def login_red():
 	while True:
 		try:
 			reddit = praw.Reddit(user_agent='SatActBot (by /u/Pianobin)', username = login_us, password = login_pass, client_id= login_id, client_secret = login_sec)
-			print("Logged into Reddit (3/3)")
 			return reddit
 		except:
-			print("Couldn't login")
+			log("Couldn't login, retrying in 2 minutes", Color.RED)
 			time.sleep(120)
 
 def run_app(reddit):	
 	print("running app")
 	try:
 		subreddit = reddit.subreddit('SatActbot+ApplyingToCollege+Sat+ACT')
+		log("Connected to subreddits", Color.GREEN)
 	except:
-		print("Couldn't connect with subreddits")
+		log("Couldn't connect with subreddits. Logging back into Reddit", Color.RED)
 		reddit = login_red
 		subreddit = reddit.subreddit('SatActbot+ApplyingToCollege+Sat+ACT')
+		log("Connected to subreddits", Color.GREEN)
 	openDB()
 	for comment in subreddit.comments(limit=50):
 		process_sub(comment)
 	closeDB()
-	print("Job complete, sleeping")
-	localtime = time.asctime( time.localtime(time.time()) )
-	print ("Local current time: ", localtime)
-
+	
 def getIDS():
 	global login_us
 	global login_pass
@@ -68,9 +86,11 @@ def openDB():
 	global cursor
 	db = sqlite3.connect("Comment.db")
 	cursor = db.cursor()
+	log("Connected to database", Color.GREEN)
 
 def closeDB():
 	db.close()
+	log("Ended connection to database", Color.CYAN)
 
 def process_sub(comment):
 	foundLink = False
@@ -87,35 +107,37 @@ def process_sub(comment):
 		db.commit()
 		for summon in SUMMONS:
 			if summon in str(comment.body).upper():
+				log("Keyword found", Color.CYAN)
 				commStr = str(comment.body)
 				commStr = commStr + " AnotherWord "
-				print(commStr)
 				for num in commStr.split():
 					if num.isdigit():
+						log("Number found", Color.CYAN)
 						theNum = int(num)
-						print(theNum)
 						if theNum >= 10 and theNum < 36: #ACT score provided
+							log("ACT score provided", Color.GREEN)
 							theIndex = ACTscores.index(theNum)
 							lowNum = SATscores[theIndex]
 							highNum = SATscores[theIndex + 1] - 10		
 							theType = "ACT"
 							notTheType = "SAT"
 							response = "between " + str(lowNum) + " and " + str(highNum) 
-							print(response)
 							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + response + REPLY_TEMP4
 						elif theNum == 36: #PERFECT ACT
+							log("ACT score provided", Color.GREEN)
 							theType = "ACT"
 							notTheType = "SAT"
 							response = "1600"
 							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + response + REPLY_TEMP4
 						elif theNum == 1600: #PERFECT SAT
+							log("New SAT score provided", Color.GREEN)
 							theType = "SAT"
 							notTheType = "ACT"
 							response = "36"
 							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + response + REPLY_TEMP4
 						elif theNum >= 560 and theNum < 1600: #SAT provided
+							log("New SAT score provided", Color.GREEN)
 							nearScore = min(SATscores, key=lambda x:abs(x - theNum))
-							print(nearScore)
 							theIndex = SATscores.index(nearScore)
 							if nearScore > theNum:
 								theIndex = theIndex - 1
@@ -123,9 +145,9 @@ def process_sub(comment):
 							theType = "new SAT"
 							notTheType = "ACT"
 							response = str(ACT)
-							print(response)
 							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + response + REPLY_TEMP4
 						elif theNum == 2400: #Perfect old SAT
+							log("Old SAT score provided", Color.GREEN)
 							theType = "old SAT"
 							notTheType = "ACT"
 							notTheType2 = "new SAT"
@@ -133,6 +155,7 @@ def process_sub(comment):
 							response2 = "1600"
 							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + response + REPLY_TEMP5 + notTheType2 + REPLY_TEMP2 + theType + REPLY_TEMP3 + response2 + REPLY_TEMP4
 						elif theNum >= 1610 and theNum <= 2390: #Old SAT
+							log("Old SAT score provided", Color.GREEN)
 							theType = "old SAT"
 							notTheType = "ACT"
 							notTheType2 = "new SAT"
@@ -152,15 +175,14 @@ def process_sub(comment):
 							reply_text = REPLY_TEMP + notTheType + REPLY_TEMP2 + theType + REPLY_TEMP3 + str(response) + REPLY_TEMP5 + notTheType2 + REPLY_TEMP2 + theType + REPLY_TEMP3 + str(response2) + REPLY_TEMP4
 
 						else: 
-							print("Invalid number provided")
+							log("Invalid number provided", Color.GREEN)
 							theType = "invalid"
 							notTheType = "invalid"
 							response = "invalid"
-							print(response)
 							reply_text = "beep boop \n\n Sorry, the number you've given is outside of the range of checked scores. Be aware, the ACT scores below 11 and the SAT scores below 560 are not provided on Collegeboard's Concordance tables. \n\n Message /u/Pianobin with any concerns."
-						print(reply_text)
 						comment.reply(reply_text)
 						break
+						log("Sent a reply", Color.GREEN)
 
 
 if __name__ == '__main__':
