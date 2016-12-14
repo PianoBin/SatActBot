@@ -22,8 +22,9 @@ oldSATscores = [1610, 1620, 1640, 1650, 1670, 1680, 1700, 1710, 1730, 1750, 1760
 def main():
 	dotenv_path = join(dirname(__file__), '.env')
 	load_dotenv(dotenv_path)
-	heroku_conn = heroku3.from_key(os.environ.get("SEC_KEY"))
-	app = heroku_conn.apps()[os.environ.get("APP_Name")]
+	print(dotenv_path)
+	heroku_conn = heroku3.from_key(os.environ.get(SEC_KEY))
+	app = heroku_conn.apps()[os.environ.get(APP_Name)]
 	print("Connected to Heroku (1/3)")
 	config = app.config()
 	getIDS(config)
