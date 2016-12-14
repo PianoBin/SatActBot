@@ -2,8 +2,6 @@ import os
 import praw
 import sqlite3
 import time
-import heroku3
-from apscheduler.schedulers.blocking import BlockingScheduler
 
 SUMMONS = ['!SATACT', '!ACTSAT']
 REPLY_TEMP = "beep boop\n\nThe equivalent " #ACT/SAT
@@ -19,23 +17,14 @@ SATscores = [560, 630, 720, 760, 810, 860, 900, 940, 980, 1020, 1060, 1100, 1130
 oldSATscores = [1610, 1620, 1640, 1650, 1670, 1680, 1700, 1710, 1730, 1750, 1760, 1780, 1790, 1810, 1820, 1840, 1850, 1870, 1880, 1900, 1920, 1930, 1950, 1970, 1990, 2000, 2020, 2040, 2060, 2080, 2090, 2110, 2130, 2150, 2170, 2190, 2210, 2230, 2260, 2280, 2300, 2330, 2350, 2370, 2390] #newSAT 1160 + 10x
 
 def main():
-	#heroku_conn = heroku3.from_key(os.environ['624600ff-f687-4e19-a048-85304ad49803'])
-	#app = heroku_conn.apps()[os.environ['fierce-spire-57526']]
-	#print("Connected to Heroku (1/3)")
-	#config = app.config()
-	print("Getting config vars")
+	print("Starting processes")
+	print("Getting config vars (1/3)")
 	getIDS()
 	print("Config vars retrieved (2/3)")
 	reddit = login_red()
 	while True:
 		run_app(reddit)
 		time.sleep(60)
-	#sched = BlockingScheduler(timezone="America/New_York")
-	#print("timezone set (4/5)")
-	#sched.add_job(lambda: run_app(reddit), 'cron', hour='6-23', minute='0-59')
-	#print("Job scheduled (5/5)")
-	#print("Ready to go!")
-	#sched.start()	
 
 def login_red():
 	while True:
@@ -61,18 +50,13 @@ def run_app(reddit):
 	closeDB()
 	print("Job complete, sleeping")
 	localtime = time.asctime( time.localtime(time.time()) )
-	print ("Local current time :", localtime)
+	print ("Local current time: ", localtime)
 
 def getIDS():
 	global login_us
 	global login_pass
 	global login_id
 	global login_sec
-	#dictIDS = config.to_dict()
-	#login_us = dictIDS['REDDIT_USERNAME']
-	#login_pass = dictIDS['REDDIT_PASSWORD']
-	#login_id = dictIDS['REDDIT_ID']
-	#login_sec = dictIDS['REDDIT_SEC']
 	login_us = os.environ['REDDIT_USERNAME']
 	login_pass = os.environ['REDDIT_PASSWORD']
 	login_id = os.environ['REDDIT_ID']
